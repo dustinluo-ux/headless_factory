@@ -1,0 +1,39 @@
+# CONTEXT.md — {{PROJECT_NAME}}
+
+> Stable context only. Does NOT contain session logs or run history — those live in agent_loop/.
+> Update when architecture changes or decisions are made. Not after every session.
+> Claude reads `repo_context.md` and `agent_loop/loop_state.md` during active work — not this file.
+
+**Project**: {{PROJECT_NAME}}
+**Initialized**: {{DATE}}
+
+---
+
+## Architecture Decisions
+
+> Record decisions that affect the structure or approach of the project.
+> Format: **Decision**: X. **Why**: Y. **Alternatives rejected**: Z.
+
+*(None yet)*
+
+---
+
+## Known Issues & Risks
+
+| ID | Issue | Severity | Status |
+|----|-------|----------|--------|
+| *(none yet)* | | | |
+
+---
+
+## Completed Milestones
+
+- [x] Project initialized ({{DATE}})
+
+---
+
+## Amendment Log
+
+| Date | Change |
+|------|--------|
+| {{DATE}} | Project bootstrapped |

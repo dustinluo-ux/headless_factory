@@ -1,0 +1,37 @@
+# MCP: python
+# Python execution environment config.
+# Claude Code runs Python via Bash — this defines the expected runtime contract.
+
+name: python
+type: native  # executed via Bash(python:*) or Bash(uv run:*)
+
+# Preferred runtime
+runtime:
+  manager: uv              # preferred: uv (fast, reproducible)
+  fallback: python3        # fallback if uv not available
+  min_version: "3.11"
+
+# Execution
+execution:
+  working_dir: "."  # set to absolute project path if running from outside project root
+  env_file: .env           # always load .env before running
+  timeout_seconds: 120     # hard timeout on any single execution
+
+# Package management
+packages:
+  install_via: "uv add"    # never: pip install (not reproducible)
+  lock_file: uv.lock       # must be committed
+  dev_deps: [pytest, ruff, mypy]
+
+# Quality gates (run before any commit touching .py files)
+pre_commit:
+  lint:  "uv run ruff check src/"
+  types: "uv run mypy src/"
+  test:  "uv run pytest tests/ -x -q"
+
+# Prohibited patterns
+never:
+  - "eval()"               # no dynamic code execution
+  - "exec()"
+  - "pickle.load()"        # unsafe deserialization
+  - "subprocess.shell=True" # use shell=False always

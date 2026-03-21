@@ -1,0 +1,43 @@
+# MCP: http
+# Lightweight HTTP/API access config.
+# All outbound calls must be declared here before the agent makes them.
+
+name: http
+type: configured  # add to Claude Code MCP settings to enable: @modelcontextprotocol/server-fetch
+
+# Allowed domains — agent may ONLY call domains listed here.
+# Update this list in SPEC.md and mirror here before any new API integration.
+allowed_domains: []   # empty by default — must be explicitly populated per project
+
+# Example entries (uncomment as needed):
+# allowed_domains:
+#   - api.openai.com
+#   - api.anthropic.com
+#   - financialmodelingprep.com
+#   - api.sec.gov
+
+# Request constraints
+requests:
+  timeout_seconds: 30
+  max_retries: 3
+  retry_backoff: exponential
+  user_agent: "workflow-starter/1.0"   # identify requests
+
+# What to do with credentials
+auth:
+  load_from: .env           # keys always from .env
+  never_log: true           # never log Authorization headers or tokens
+  never_hardcode: true
+
+# Response handling
+responses:
+  log_status_codes: true
+  raise_on_4xx: true
+  raise_on_5xx: true
+  max_response_size_mb: 10  # refuse to process oversized responses
+
+# Kill switch integration
+spend_tracking:
+  enabled: true
+  budget_env_var: BUDGET_USD
+  halt_on_breach: true

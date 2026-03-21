@@ -1,0 +1,49 @@
+# agent/rules.yaml
+# Coding rules enforced across all work in this repo.
+# Claude reads these before writing or modifying any code.
+# Rules are constraints, not guidelines — violation requires explicit justification.
+
+functions:
+  max_lines: 30
+  max_nesting_depth: 3
+  principle: "One function, one job. If it needs a comment to explain *what* it does, split it."
+
+naming:
+  convention: snake_case
+  rule: "Names describe what something IS or DOES — not how it is implemented."
+  avoid: [data, info, temp, obj, thing, process, handle, manage]
+
+logic:
+  no_hidden_state: true
+  no_silent_fallbacks: true
+  no_bare_except: true
+  explicit_errors: "Every caught exception must be logged or re-raised with context."
+  side_effects: "Document any function that mutates external state or makes network calls."
+
+structure:
+  logic:    src/
+  scripts:  scripts/
+  tests:    tests/
+  agent:    agent/
+  modules:  modules/
+  skills:   skills/
+
+complexity:
+  principle: "If you need a diagram to explain it, simplify it first."
+  prefer_flat_over_nested: true
+  no_premature_abstraction: true
+  three_uses_rule: "Only abstract when the same pattern appears in 3+ places."
+
+testing:
+  required_for: "Every function that touches external state, I/O, or money."
+  edge_cases: required
+  avoid_over_mocking: true
+  principle: "Tests should break when behavior breaks — not when internals change."
+
+money:
+  rule: "Never use float for monetary values. Use Decimal (Python), BigDecimal (JVM), or integer cents."
+  violation: hard_failure
+
+secrets:
+  rule: "No hardcoded credentials. Load from .env only. Never log values."
+  violation: hard_failure

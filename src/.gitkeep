@@ -1,0 +1,11 @@
+# src/ — main project logic
+#
+# Business logic lives here. No scripts, no tests, no config.
+# Import from here; do not execute directly.
+#
+# Suggested structure when populated:
+#   src/__init__.py
+#   src/models.py      — data models / types
+#   src/pipeline.py    — core processing logic
+#   src/io.py          — file and API I/O (atomic writes)
+#   src/utils.py       — shared utilities (only if used 3+ times)

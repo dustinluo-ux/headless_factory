@@ -1,0 +1,13 @@
+# tests/ — unit and integration tests
+#
+# Mirror the src/ structure: one test file per src/ module.
+#   tests/test_pipeline.py  ↔  src/pipeline.py
+#   tests/test_io.py        ↔  src/io.py
+#
+# Run all tests: pytest tests/ -x -q
+# Run one file:  pytest tests/test_pipeline.py -v
+#
+# Rules (from agent/rules.yaml):
+#   - Every function touching external state needs a test
+#   - Happy path + at least one failure case per function
+#   - No mocking internal modules — only external I/O

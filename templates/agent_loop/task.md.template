@@ -1,0 +1,64 @@
+# task.md — Current Task
+
+> Written by Claude. Read by Cursor.
+> Cursor reads ONLY this file + the files listed under "Files to Read".
+> Do not read the full repo. Do not read SPEC.md or CONTEXT.md unless listed below.
+
+**Task ID**: {{TASK_ID}}
+**Created**: {{DATE}}
+**Status**: PENDING
+
+---
+
+## Objective
+
+*(One sentence: what must be true when this task is done.)*
+
+---
+
+## Files to Read
+
+> Read these files before writing any code. Nothing else.
+
+| File | Why |
+|------|-----|
+| *(list exactly)* | *(reason)* |
+
+---
+
+## Files to Modify
+
+> Only modify files listed here. If you need to touch something not listed, stop and flag it.
+
+| File | Change |
+|------|--------|
+| *(list exactly)* | *(what changes)* |
+
+---
+
+## Acceptance Criteria
+
+- [ ] *(concrete, checkable condition)*
+- [ ] *(concrete, checkable condition)*
+- [ ] Tests pass: `pytest tests/ -x -q`
+
+---
+
+## Constraints
+
+- Do not modify files outside the list above.
+- Do not refactor surrounding code.
+- Do not add dependencies not already in the project.
+- *(add task-specific constraints here)*
+
+---
+
+## Validation
+
+How to verify this task is complete:
+
+```bash
+# Command to run after implementation
+```
+
+Expected output or behaviour: *(describe)*

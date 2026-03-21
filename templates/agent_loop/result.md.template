@@ -1,0 +1,61 @@
+# result.md — Run Result
+
+> Written by summarize_run.py. Read by Claude.
+> Claude reads ONLY this file to decide the next task. Do not read raw logs.
+> Overwritten after each run.
+
+**Task ID**: *(linked to task.md)*
+**Run Date**: *(auto-filled by summarize_run.py)*
+**Script**: *(auto-filled)*
+**Duration**: *(auto-filled)*
+
+---
+
+## Outcome
+
+**Status**: PASS / FAIL / PARTIAL
+**One-line summary**: *(what happened)*
+
+---
+
+## Key Metrics
+
+| Metric | Value | Target | Delta |
+|--------|-------|--------|-------|
+| *(e.g. sharpe_ratio)* | | | |
+| *(e.g. max_drawdown)* | | | |
+| *(e.g. test_accuracy)* | | | |
+
+---
+
+## Acceptance Criteria Results
+
+| Criterion | Result |
+|-----------|--------|
+| *(from task.md AC-01)* | PASS / FAIL |
+| *(from task.md AC-02)* | PASS / FAIL |
+
+---
+
+## Errors / Warnings
+
+```
+*(paste relevant error lines only — not full stack trace unless novel)*
+```
+
+*(none)* if clean run.
+
+---
+
+## Raw Output Tail
+
+```
+*(last 20 lines of execution output)*
+```
+
+---
+
+## Recommended Next Action
+
+*(One sentence: what should Claude do next based on this result.)*
+*(Written by summarize_run.py if metrics patterns match; else filled manually.)*

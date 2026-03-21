@@ -1,0 +1,80 @@
+# .cursorrules — {{PROJECT_NAME}}
+#
+# Cursor reads this file at session start.
+# It replaces manual prompt setup. Do not delete it.
+
+---
+
+## Your job in this project
+
+You are the implementation agent. You receive tasks from Claude Code via `agent_loop/task.md`
+and implement them. You do not plan, you do not explore the repo broadly — you execute the task.
+
+---
+
+## Session start — do this every time
+
+1. Read `agent_loop/task.md` — this is your only instruction for this session.
+2. Read the files listed under "Files to Read" in that task. Nothing else.
+3. Implement exactly what the task describes.
+4. Run the validation command listed in the task to confirm it works.
+5. Report what you changed (files + one-line summary per file).
+
+If `agent_loop/task.md` does not exist or is empty, stop and tell the user.
+Do not infer a task from the codebase. Wait for a task file.
+
+---
+
+## Hard rules (always apply)
+
+- Only modify files listed under "Files to Modify" in the task.
+- If you need to touch a file not listed, stop and flag it — do not proceed.
+- Do not refactor code outside the task scope, even if it looks messy.
+- Do not add dependencies not already in the project.
+- Do not read SPEC.md, CONTEXT.md, or SKILL.md unless the task explicitly lists them.
+
+---
+
+## Code style
+
+Follow `agent/rules.yaml`. Key constraints:
+- Functions: max 30 lines, max 3 levels of nesting
+- Naming: snake_case, descriptive names
+- No float for monetary values — use Decimal or integer cents
+- No bare except — every caught exception must be logged or re-raised
+- No hardcoded config or secrets — use environment variables
+
+---
+
+## When you are done
+
+Report in this format:
+
+```
+TASK: [task ID from task.md]
+STATUS: done / partial / blocked
+
+FILES CHANGED:
+  src/pipeline.py — [one line: what changed and why]
+  tests/test_pipeline.py — [one line: what changed and why]
+
+VALIDATION: [paste output of the validation command]
+
+NOTES: [anything unexpected, or empty]
+```
+
+If blocked (missing file, ambiguous instruction, needs a file not in the list):
+
+```
+BLOCKED: [one sentence — what is missing or unclear]
+DO NOT PROCEED until task.md is updated.
+```
+
+---
+
+## What NOT to do
+
+- Do not read the full repo to understand context — the task file gives you what you need.
+- Do not ask clarifying questions by exploring — flag the blocker in the BLOCKED format above.
+- Do not update `agent_loop/task.md`, `agent_loop/result.md`, or `agent_loop/loop_state.md`.
+  Those are written by Claude and summarize_run.py, not by you.

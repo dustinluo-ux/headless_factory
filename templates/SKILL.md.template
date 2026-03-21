@@ -1,0 +1,126 @@
+# SKILL.md — Procedures for {{PROJECT_NAME}}
+
+> Reusable techniques and patterns for this project.
+> Domain skill packs are appended at the bottom when loaded via bootstrap.
+> Add project-specific procedures under § 3.
+
+---
+
+## § 1 — Universal Patterns
+
+### 1.1 Atomic File Write
+
+Write to `.tmp`, validate, rename. Never write directly to a production target.
+
+**Python**:
+```python
+from pathlib import Path
+
+def atomic_write(target: Path, content: str) -> None:
+    tmp = target.with_suffix(".tmp")
+    tmp.write_text(content, encoding="utf-8")
+    if not tmp.stat().st_size:
+        tmp.unlink()
+        raise ValueError(f"Rendered file was empty: {target}")
+    tmp.rename(target)
+```
+
+**Node.js**:
+```js
+const fs = require('fs');
+function atomicWrite(target, content) {
+  const tmp = target + '.tmp';
+  fs.writeFileSync(tmp, content, 'utf8');
+  if (!fs.statSync(tmp).size) { fs.unlinkSync(tmp); throw new Error(`Empty: ${target}`); }
+  fs.renameSync(tmp, target);
+}
+```
+
+### 1.2 Structured Logger
+
+Log JSON-lines. Level from `LOG_LEVEL` env var. Never log secret values.
+
+**Python**:
+```python
+import json, logging, os
+from datetime import datetime, timezone
+
+class JSONFormatter(logging.Formatter):
+    def format(self, record):
+        return json.dumps({"ts": datetime.now(timezone.utc).isoformat(),
+                           "level": record.levelname, "msg": record.getMessage()})
+
+def get_logger(name):
+    logger = logging.getLogger(name)
+    if not logger.handlers:
+        h = logging.StreamHandler()
+        h.setFormatter(JSONFormatter())
+        logger.addHandler(h)
+    logger.setLevel(os.getenv("LOG_LEVEL", "INFO"))
+    return logger
+```
+
+### 1.3 Kill Switch
+
+Track cumulative API spend. Halt before exceeding budget. Never resume without confirmation.
+
+**Python**:
+```python
+from decimal import Decimal
+
+class KillSwitch:
+    def __init__(self, budget_usd: Decimal) -> None:
+        self.budget = budget_usd
+        self.spent = Decimal("0")
+        self.triggered = False
+
+    def charge(self, amount: Decimal, operation: str) -> None:
+        if self.triggered:
+            raise RuntimeError("KILL_SWITCH_TRIGGERED: halted. Confirm reset to resume.")
+        self.spent += amount
+        if self.spent >= self.budget:
+            self.triggered = True
+            raise RuntimeError(
+                f"KILL_SWITCH_TRIGGERED: spent={self.spent} >= budget={self.budget} "
+                f"after '{operation}'"
+            )
+```
+
+### 1.4 Monetary Arithmetic
+
+Never use float for money. Use Decimal (Python), BigDecimal (Java/Kotlin), or integer cents.
+
+**Python**:
+```python
+from decimal import Decimal, ROUND_HALF_UP
+
+def to_decimal(value) -> Decimal:
+    return Decimal(str(value))  # str() avoids float binary precision errors
+
+def round_money(value: Decimal, places: int = 2) -> Decimal:
+    return value.quantize(Decimal(10) ** -places, rounding=ROUND_HALF_UP)
+```
+
+---
+
+## § 2 — Data Quality Checklist
+
+Before using any external data in analysis or as model input:
+
+- [ ] Source confirmed (primary source preferred over secondary)
+- [ ] Date range covers the required period
+- [ ] Missing values assessed — handling approach documented
+- [ ] Outliers reviewed — not silently dropped
+- [ ] Units, currency, and encoding confirmed
+
+---
+
+## § 3 — Project-Specific Procedures
+
+> Add procedures specific to {{PROJECT_NAME}} here.
+
+*(None yet)*
+
+---
+
+{{SKILL_PACK_CONTENT}}

@@ -1,0 +1,43 @@
+# MCP: git
+# Wraps git operations with guardrails.
+# Claude Code has native git access — this config defines what's permitted.
+
+name: git
+type: native  # Claude Code executes git commands via Bash
+
+# Permitted operations (read-only by default)
+allow:
+  - status
+  - log
+  - diff
+  - branch --list
+  - show
+
+# Require explicit user confirmation before running
+confirm_required:
+  - commit
+  - push
+  - reset
+  - rebase
+  - merge
+  - tag
+
+# Hard blocks — never run without user typing the command themselves
+never_run:
+  - push --force
+  - reset --hard
+  - clean -f
+  - branch -D      # branch deletion
+
+# Commit conventions
+commit:
+  message_format: "[type]: short description"
+  valid_types: [feat, fix, refactor, test, chore, docs, config]
+  max_subject_length: 72
+  no_gpg_skip: true         # never use --no-gpg-sign
+  no_verify_skip: true      # never use --no-verify
+
+# Branch protection
+protected_branches:
+  - main
+  - master

@@ -1,0 +1,53 @@
+# loop_state.md — Current Iteration
+
+> Single-page loop snapshot. Overwrite this file every iteration — do not append.
+> Claude reads this on session start instead of scrolling CONTEXT.md history.
+> Keep it under 40 lines.
+
+**Iteration**: 0
+**Updated**: {{DATE}}
+
+---
+
+## Current Objective
+
+*(What is the project trying to achieve right now — one sentence.)*
+*(Update this when the objective changes, not every iteration.)*
+
+---
+
+## Last Task
+
+**ID**: *(none)*
+**Summary**: *(none)*
+**Status**: *(none)*
+
+---
+
+## Last Result
+
+**Outcome**: *(none)*
+**Key metric**: *(none)*
+**Anomalies**: *(none)*
+
+---
+
+## Next Task
+
+**Planned**: *(describe the next task in one sentence, or "TBD")*
+**Blocked by**: *(none)*
+
+---
+
+## Active Decisions
+
+| Decision | Options | Owner |
+|----------|---------|-------|
+| *(anything unresolved that affects next task)* | | |
+
+---
+
+## Notes for Claude
+
+*(Anything the developer wants Claude to know before writing the next task.
+Delete after Claude has read it.)*

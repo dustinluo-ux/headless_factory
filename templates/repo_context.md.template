@@ -1,0 +1,83 @@
+# repo_context.md — {{PROJECT_NAME}}
+
+> One-page architecture snapshot. Claude reads THIS instead of SPEC + CONTEXT + SKILL on session start.
+> Update when architecture changes — not after every session.
+> Keep it under 80 lines. If it grows beyond that, something is wrong.
+
+**Last Updated**: {{DATE}}
+**Current Phase**: INITIALIZED
+**Active Task**: *(none — fill after first task)*
+
+---
+
+## What This Project Does
+
+{{PROJECT_PURPOSE}}
+
+---
+
+## Entry Points
+
+| File | How to run | What it does |
+|------|-----------|--------------|
+| *(none yet)* | | |
+
+---
+
+## Key Modules
+
+| File | Role |
+|------|------|
+| *(none yet)* | |
+
+---
+
+## Data Flow
+
+```
+input → [module] → [module] → output
+```
+
+*(Fill in when src/ is populated)*
+
+---
+
+## External Dependencies
+
+| Dependency | Purpose | Credentials |
+|-----------|---------|-------------|
+| *(none yet)* | | |
+
+---
+
+## Current Loop State
+
+| Field | Value |
+|-------|-------|
+| **Last task** | *(none)* |
+| **Last result** | *(none)* |
+| **Next objective** | Fill out SPEC.md and define first task |
+| **Blockers** | *(none)* |
+
+---
+
+## Critical Constraints
+
+- Budget: `BUDGET_USD` in `.env` (kill switch)
+- Allowed domains: see `SPEC.md § Allowed Domains`
+- Hardware: *(fill in from SPEC.md § Hardware Target)*
+
+---
+
+## How to Run
+
+```bash
+# Run main pipeline
+python scripts/[script_name].py
+
+# Summarize last run → result.md
+python scripts/summarize_run.py [log_file]
+
+# Run tests
+pytest tests/ -x -q
+```

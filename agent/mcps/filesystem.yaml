@@ -1,0 +1,29 @@
+# MCP: filesystem
+# Provides scoped read/write access to the local filesystem.
+# Claude Code has native filesystem access — this config defines scope constraints.
+
+name: filesystem
+type: native  # built into Claude Code; no install required
+
+# Permitted roots — agent may not read/write outside these paths
+allowed_roots:
+  - "/path/to/project/root  # set to your absolute project path"          # always allowed
+  - "/path/to/project/root  # set to your absolute project path/data"     # data inputs
+  - "/path/to/project/root  # set to your absolute project path/outputs"  # generated outputs
+
+# Explicitly denied
+denied_paths:
+  - "/path/to/project/root  # set to your absolute project path/.env"     # never read secrets programmatically
+  - "~/.ssh"
+  - "~/.aws"
+
+# Write behaviour
+atomic_writes: true             # always write via .tmp → rename
+max_file_size_mb: 50            # refuse to write files larger than this
+
+# Patterns to never write
+deny_write_patterns:
+  - "*.env"
+  - "*.pem"
+  - "*.key"
+  - "*credentials*"

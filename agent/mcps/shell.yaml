@@ -1,0 +1,38 @@
+# MCP: shell
+# Shell/terminal execution config.
+# Claude Code has native Bash access — this defines safe usage boundaries.
+
+name: shell
+type: native  # Claude Code Bash tool
+
+# Permitted command categories
+allow:
+  - file inspection: [ls, find, cat, head, tail, wc, stat]
+  - search: [grep, rg, awk, sed]
+  - build/run: [make, uv, npm, npx]
+  - git: [git]              # see git.yaml for constraints
+  - process: [ps, kill]
+
+# Require confirmation before running
+confirm_required:
+  - rm
+  - mv            # when destination already exists
+  - chmod
+  - chown
+  - curl / wget   # any outbound network call
+
+# Hard blocks
+never_run:
+  - "rm -rf /"
+  - "rm -rf ~"
+  - "curl | bash"   # piped execution
+  - "wget | bash"
+  - "chmod 777"
+  - "sudo"          # no privilege escalation
+
+# Environment
+env:
+  always_load: .env
+  never_export_to_shell: [AWS_SECRET, PRIVATE_KEY, PASSWORD, TOKEN]
+  log_commands: true        # log every command run (for audit)
+  timeout_seconds: 60

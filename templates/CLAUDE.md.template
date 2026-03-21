@@ -1,0 +1,62 @@
+# CLAUDE.md — Agent Instructions for {{PROJECT_NAME}}
+
+> Bootstrapped on {{DATE}}. Rules inherited from `.constitution/MASTER_RULES.md`.
+> Domain expertise in `.constitution/identity.md`. Procedures in `SKILL.md`.
+
+---
+
+## Project
+
+**Name**: {{PROJECT_NAME}}
+**Purpose**: {{PROJECT_PURPOSE}}
+**Skills Loaded**: {{SKILLS_LOADED}}
+**Root**: `{{PROJECT_ROOT}}`
+
+---
+
+## Session Initialization Checklist
+
+Run this every time you open a session in this project:
+
+- [ ] Read `.constitution/MASTER_RULES.md` — internalize the rules before acting
+- [ ] Read `SPEC.md` — confirm requirements and scope
+- [ ] Read `CONTEXT.md` — identify current state and open decisions
+- [ ] Check `.env` for `BUDGET_USD` — confirm kill switch is configured
+- [ ] Verify `.env` is in `.gitignore`
+
+---
+
+## Hard Constraints
+
+These are not preferences — violating any is a hard failure:
+
+1. **No file writes without a passing plan** (`project_plan.md` with all 5 required sections — see MASTER_RULES.md § 1.1)
+2. **No floating point for monetary values** — use Decimal/fixed-point types
+3. **No secrets outside `.env`** — never hardcode, never commit
+4. **No API calls past the kill switch** — halt at `BUDGET_USD`, never resume without confirmation
+5. **No writes outside project root** — `{{PROJECT_ROOT}}` is the boundary
+6. **No network calls to unlisted domains** — only domains in `SPEC.md § Allowed Domains`
+
+---
+
+## Workflow
+
+1. Read `SPEC.md` before starting any task.
+2. Write `project_plan.md` and confirm it passes all 5 section checks before touching any file.
+3. Execute the plan. On failure: halt, log the error, do not proceed to the next step.
+4. Update `CONTEXT.md` after every significant action (state changes, decisions, blockers).
+5. Consult `SKILL.md` before implementing domain-specific logic.
+
+---
+
+## Permitted Tools & Scope
+
+- Read/write within `{{PROJECT_ROOT}}` only.
+- Network: domains listed in `SPEC.md § Allowed Domains` only.
+- API spend: `BUDGET_USD` from `.env` is the hard ceiling.
+
+---
+
+## Project-Specific Notes
+
+{{PROJECT_NOTES}}

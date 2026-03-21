@@ -1,0 +1,11 @@
+# modules/ — optional domain extensions
+#
+# Add subdirectories here for optional capabilities that extend the core agent layer.
+# Each module is self-contained: its own skills/, config, and README.
+#
+# Example:
+#   modules/financial-nlp/   — FinBERT sentiment analysis
+#   modules/data-pipeline/   — ETL utilities
+#   modules/reporting/       — output formatting and charting
+#
+# A module is only loaded when explicitly requested. It does not affect core behaviour.

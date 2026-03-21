@@ -1,0 +1,7 @@
+# scripts/ — execution entry points
+#
+# Scripts wire together src/ modules and are run directly (CLI, cron, etc.).
+# No business logic here — only orchestration and I/O wiring.
+#
+# Naming: verb_noun.py  (e.g. run_pipeline.py, export_report.py, fetch_data.py)
+# Each script should be runnable standalone: python scripts/run_pipeline.py
