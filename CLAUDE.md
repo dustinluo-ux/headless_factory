@@ -19,7 +19,8 @@ never ask one field at a time. If purpose is obvious from context, infer it.
 |-------|----------|---------|
 | `name` | Yes | — |
 | `purpose` | Yes | — |
-| `target_dir` | No | sibling of current dir: `../[name]` |
+| `target_dir` | Yes | ask — do not assume |
+| `github` | Yes | ask — `private`, `public`, or `none` |
 | `skills` | No | none (options: `valuation`) |
 | `budget` | No | `5.00` |
 
@@ -159,11 +160,10 @@ build/
 Thumbs.db
 ```
 
-### Step 7 — Initialize git
+### Step 7 — Initialize git and connect GitHub
 
 ```bash
 git init [target_dir]
-# Stage everything except .env
 git -C [target_dir] add \
     CLAUDE.md SPEC.md CONTEXT.md SKILL.md repo_context.md .cursorrules \
     .constitution/ agent/ agent_loop/ \
@@ -174,13 +174,41 @@ git -C [target_dir] commit -m "chore: bootstrap [name]"
 
 If git commit fails due to missing user config, warn but do not halt.
 
+**If `github` ≠ `none`**, create the remote repo and push:
+
+```bash
+gh repo create [name] --[private|public] --source [target_dir] --remote origin --push
+```
+
+If `gh` is not authenticated, output this warning and skip — do not halt:
+> GitHub step skipped: run `gh auth login` then `gh repo create [name] --private --source . --remote origin --push` from the project directory.
+
 ### Step 8 — Confirm
 
 Report:
 - Files created (list)
 - Skills loaded
 - Budget configured
-- Next steps: fill out `SPEC.md` and `repo_context.md`, then open [target_dir] in Claude Code
+- GitHub: remote URL if created, or "skipped — run `gh auth login` to enable"
+
+Then output this exact block so the user knows what needs their input:
+
+---
+**Bootstrap complete. Two files need your input before work can start:**
+
+**1. `SPEC.md` — fill this now** *(required before any task can be written)*
+   - [ ] § 2 Scope — what's in and out
+   - [ ] § 3 Data Sources — where data comes from
+   - [ ] § 5 Inputs & Outputs — what goes in, what comes out
+   - [ ] § 6 Acceptance Criteria — how you'll know it's done
+   - [ ] § 8 Hardware Target — CPU-only, NVIDIA, or Apple Silicon
+
+**2. `repo_context.md` — fill this once code exists** *(leave blank for now)*
+   - Entry points, key modules, data flow, how to run
+
+**Everything else fills itself as work progresses.**
+Say "help me fill out SPEC.md" to do it now in chat.
+---
 
 ---
 
