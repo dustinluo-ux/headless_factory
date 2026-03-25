@@ -1,0 +1,87 @@
+# R&D Pod — {{PROJECT_NAME}}
+
+> AutoResearch template. Copy to `research/` and fill in the query block to activate.
+> The Researcher sub-agent reads this file, runs the query, and writes findings below.
+> Do not edit the "Findings" section manually — it is written by the Researcher.
+
+---
+
+## Query
+
+**Topic**: *(one sentence — what do you need to know?)*
+**Decision it supports**: *(what will you do differently based on the answer?)*
+**Required by**: *(date or milestone)*
+
+### Research constraints
+- Minimum confidence: `HIGH` or `MEDIUM` (no LOW-only findings accepted)
+- Sources: primary preferred — cite original publication/data, not aggregators
+- Scope: *(narrow to sub-topic if broad topic — e.g. "SaaS multiples Q4 2024" not "tech valuations")*
+
+### Questions to answer
+1. *(specific question — answerable, not open-ended)*
+2. *(specific question)*
+3. *(specific question)*
+
+---
+
+## Researcher Instructions
+
+> Claude: when activating this pod, invoke the Researcher sub-agent with these instructions:
+
+```
+You are the Researcher sub-agent for {{PROJECT_NAME}}.
+Read the Query section above. For each question:
+1. Search for the answer using available tools.
+2. Cite the primary source (URL + retrieval date).
+3. Assign confidence: HIGH (primary source), MEDIUM (secondary), LOW (inferred).
+4. Flag conflicts between sources.
+
+Write your findings to the "Findings" section of this file using the format below.
+Do not modify the Query section. Halt and flag if you cannot find a source with
+confidence ≥ MEDIUM for a required question.
+```
+
+---
+
+## Findings
+
+*Written by Researcher sub-agent. Do not edit manually.*
+
+**Completed**: *(YYYY-MM-DD HH:MM UTC)*
+**Overall confidence**: *(HIGH / MEDIUM / MIXED)*
+
+### Q1: *(question repeated)*
+
+**Answer**: *(concise answer)*
+**Source**: *(URL — retrieved YYYY-MM-DD)*
+**Confidence**: HIGH / MEDIUM / LOW
+**Conflicts**: *(other sources that say something different, if any)*
+
+### Q2: *(question repeated)*
+
+**Answer**:
+**Source**:
+**Confidence**:
+**Conflicts**:
+
+### Q3: *(question repeated)*
+
+**Answer**:
+**Source**:
+**Confidence**:
+**Conflicts**:
+
+---
+
+## Summary for Calling Agent
+
+*(Researcher writes a 2–3 sentence synthesis here: what was found, what is uncertain,
+what the calling agent should do with this information.)*
+
+---
+
+## Action Required
+
+- [ ] Calling agent: review findings and update `CONTEXT.md` with decisions taken
+- [ ] If confidence is LOW on any required question: re-scope or escalate
+- [ ] If findings contradict current plan: flag to user before proceeding

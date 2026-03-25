@@ -4,7 +4,18 @@
 > Update when requirements change — never let the implementation diverge silently from this spec.
 
 **Last Updated**: {{DATE}}
-**Status**: DRAFT
+
+## Lifecycle
+
+| Field | Value |
+|-------|-------|
+| **Status** | `ACTIVE` |
+| **Kill Conditions** | *(conditions under which this project should be stopped — e.g. "negative ROI after 3 sprints", "blocked on data access > 30 days")* |
+| **Last Audit** | {{DATE}} |
+| **Maintenance Threshold** | *(what "done" looks like — when to move from ACTIVE → MAINTENANCE)* |
+
+> Status values: `ACTIVE` · `MAINTENANCE` · `ARCHIVED` · `KILLED`
+> The Auditor checks lifecycle status before approving new work on a non-ACTIVE project.
 
 ---
 

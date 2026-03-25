@@ -26,6 +26,33 @@ Run this every time you open a session in this project:
 
 ---
 
+## SessionStart Autopilot + Incremental Workflow (MANDATORY)
+
+**Every session start / resume:**
+
+1. **Load state:** Read `CONTEXT.md` (Discussion Rounds, Current Spec Version), `agent_loop/loop_state.md` (Objective/Blockers), `SPEC.md` header (Status/Last Audit). Halt if BLOCKED.
+
+2. **Planning cascade (gstack preferred):**
+   - If `SPEC.md` §§ 2, 3, 5, 6, 8 incomplete: run `/office-hours` → `/plan-ceo-review` → `/plan-eng-review` on `repo_context.md` + pasted brief.
+   - Fill `SPEC.md` §§ 2, 3, 5, 6, 8 + `repo_context.md` (1-page arch). Update `CONTEXT.md`: "Round [N]: [summary of changes]. Spec Version [N+1]."
+
+3. **No gstack / planning done?** Prompt: *"Paste brief/discussion or 'proceed'."* Then simulate gstack: risk-first plan → fill SPEC/repo_context → increment CONTEXT Discussion Rounds.
+
+4. **Auditor gate:** Invoke Auditor sub-agent on all SPEC/CONTEXT changes (5 Hard Limits). `BLOCK` → explain → halt.
+
+5. **Prep task loop:** Update `loop_state.md` (Objective from SPEC §2, Blockers = none). Write first `task.md`: "Implement SPEC §X per plan."
+
+6. **Output:** `"Spec filled (Version [N]). Env/Budget ready? Discussion rounds: [N]. Say 'task loop start', 'discuss more', or paste brief."`
+
+**Dev Loop (after "task loop start"):**
+- Read `result.md` → Update `CONTEXT.md` / `loop_state.md` incrementally (new findings → Spec Version bump if needed).
+- Auditor on updates → Write next `task.md`.
+- **Self-update:** After 3 rounds or `/retro`: scan transcript → add rule to this `CLAUDE.md`: `# Learned: [rule from discussion]`. Commit if changed.
+
+**Never code before planning/Auditor PASS. Never forget state — always read CONTEXT/loop_state first.**
+
+---
+
 ## Hard Constraints
 
 These are not preferences — violating any is a hard failure:
@@ -46,6 +73,55 @@ These are not preferences — violating any is a hard failure:
 3. Execute the plan. On failure: halt, log the error, do not proceed to the next step.
 4. Update `CONTEXT.md` after every significant action (state changes, decisions, blockers).
 5. Consult `SKILL.md` before implementing domain-specific logic.
+
+---
+
+## Agent Teams
+
+Two sub-agent roles available via the `Agent` tool. Invoke explicitly at the phases below.
+
+### Researcher
+**Trigger**: Any task requiring external facts — market data, competitor analysis, literature
+review, prior art, regulatory lookups.
+**Subagent instructions**:
+- Gather and cite; do not fabricate sources.
+- Write structured findings to `research/[topic]-[YYYY-MM-DD].md` with: source URL, retrieval
+  date, confidence level (HIGH = primary source / MEDIUM = secondary / LOW = inferred).
+- Return a one-paragraph summary to the calling agent with key facts and confidence assessment.
+
+### Auditor
+**Trigger**: Automatically before finalising any `project_plan.md`, and before any irreversible
+external action (API call, git push, database write, external service call).
+**Subagent instructions**: Read `.constitution/identity.md` § Hard Limits. The plan **PASSES**
+only if ALL five hold:
+1. Risk register present — bear case is the anchor, not the base case
+2. No float for monetary calculations anywhere in scope — Decimal confirmed
+3. Every analytical output states methodology and assumptions explicitly
+4. API spend tracked; no call exceeds remaining `BUDGET_USD` without user confirmation
+5. No output range is too wide to be decision-relevant
+
+**Output**: `PASS — [evidence for each of the 5]` or `BLOCK — [specific violation(s)]`.
+A `BLOCK` halts execution immediately. Do not proceed past a BLOCK without resolving the violation.
+
+---
+
+## Planning Skills
+
+If gstack is installed (`~/.claude/skills/gstack/` exists), invoke these skills at the named
+phases. All are optional but strongly recommended — especially `/plan-eng-review` before any
+Cursor handoff.
+
+| Skill | Phase | When to use |
+|-------|-------|-------------|
+| `/office-hours` | Before writing `SPEC.md` | Expose demand reality, narrow scope, surface hidden assumptions |
+| `/plan-ceo-review` | After first plan draft | Strategic review — scope expansion or reduction, rethink premises |
+| `/plan-eng-review` | Before first Cursor task | Lock in architecture, data flow, edge cases, test coverage |
+| `/retro` | End of sprint / week | Commit history analysis, per-person breakdown, trend tracking |
+
+Check gstack is available:
+```bash
+ls ~/.claude/skills/gstack/SKILL.md 2>/dev/null && echo "gstack: installed" || echo "gstack: not found"
+```
 
 ---
 
