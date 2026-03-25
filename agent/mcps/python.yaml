@@ -9,7 +9,7 @@ type: native  # executed via Bash(python:*) or Bash(uv run:*)
 runtime:
   manager: uv              # preferred: uv (fast, reproducible)
   fallback: python3        # fallback if uv not available
-  min_version: "3.11"
+  min_version: "3.11"  # aligns with pyproject.toml requires-python = ">=3.11"
 
 # Execution
 execution:

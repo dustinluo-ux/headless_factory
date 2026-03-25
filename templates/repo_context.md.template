@@ -50,17 +50,6 @@ input → [module] → [module] → output
 
 ---
 
-## Current Loop State
-
-| Field | Value |
-|-------|-------|
-| **Last task** | *(none)* |
-| **Last result** | *(none)* |
-| **Next objective** | Fill out SPEC.md and define first task |
-| **Blockers** | *(none)* |
-
----
-
 ## Critical Constraints
 
 - Budget: `BUDGET_USD` in `.env` (kill switch)
