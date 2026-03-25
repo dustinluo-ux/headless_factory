@@ -1,8 +1,8 @@
 # R&D Pod — {{PROJECT_NAME}}
 
 > AutoResearch template. Copy to `research/` and fill in the query block to activate.
-> The Researcher sub-agent reads this file, runs the query, and writes findings below.
-> Do not edit the "Findings" section manually — it is written by the Researcher.
+> Two activation modes — see "Researcher Instructions" below.
+> Do not edit the "Findings" section manually — it is written by the script or sub-agent.
 
 ---
 
@@ -26,8 +26,18 @@
 
 ## Researcher Instructions
 
-> Claude: when activating this pod, invoke the Researcher sub-agent with these instructions:
+Two ways to activate this pod:
 
+**Mode A — Automated (Python script, calls Gemini API directly):**
+```bash
+python scripts/run_r_and_d.py research/r_and_d_pod.md --task [id]
+```
+Reads the Query section, calls Gemini 2.0 Flash, writes findings back here, logs spend.
+
+**Mode B — Interactive (Claude Agent tool, within Claude Code session):**
+Tell Claude: *"Activate the R&D pod at research/r_and_d_pod.md"*
+
+Claude invokes the Researcher sub-agent with these instructions:
 ```
 You are the Researcher sub-agent for {{PROJECT_NAME}}.
 Read the Query section above. For each question:

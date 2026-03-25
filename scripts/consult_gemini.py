@@ -41,7 +41,7 @@ from google.genai import types
 
 
 # ── Cost estimate (Gemini 2.0 Flash pricing as of 2025) ───────────────────────
-# $0.10 / 1M input tokens, $0.40 / 1M output tokens
+# $0.075 / 1M input tokens, $0.30 / 1M output tokens
 # Using conservative flat estimate: $0.002 per call for budget check
 ESTIMATED_COST = Decimal("0.002")
 DEFAULT_MODEL = "gemini-2.0-flash"
@@ -90,9 +90,9 @@ def call_gemini(
     usage = response.usage_metadata
     total_tokens = (usage.prompt_token_count or 0) + (usage.candidates_token_count or 0)
 
-    # Actual cost calculation (Gemini 2.0 Flash)
-    input_cost = Decimal(str(usage.prompt_token_count or 0)) * Decimal("0.0000001")
-    output_cost = Decimal(str(usage.candidates_token_count or 0)) * Decimal("0.0000004")
+    # Actual cost calculation (Gemini 2.0 Flash: $0.075/1M input, $0.30/1M output)
+    input_cost = Decimal(str(usage.prompt_token_count or 0)) * Decimal("0.000000075")
+    output_cost = Decimal(str(usage.candidates_token_count or 0)) * Decimal("0.0000003")
     actual_cost = input_cost + output_cost
 
     log_spend(PROVIDER, model, actual_cost, total_tokens)

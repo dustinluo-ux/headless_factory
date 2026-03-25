@@ -2,12 +2,14 @@
 
 > Stable context only. Does NOT contain session logs or run history — those live in agent_loop/.
 > Update when architecture changes or decisions are made. Not after every session.
-> Claude reads `repo_context.md` and `agent_loop/loop_state.md` during active work — not this file.
+> Claude reads this file at SESSION START to load state. During mid-task work it reads repo_context.md + loop_state.md instead.
 
 **Project**: {{PROJECT_NAME}}
 **Initialized**: {{DATE}}
 **Lifecycle Status**: `ACTIVE`
 **Last Audit**: {{DATE}}
+**Discussion Rounds**: 0
+**Spec Version**: 0
 
 ---
 

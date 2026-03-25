@@ -14,7 +14,7 @@ Every bootstrapped project gets:
 - A **4-file governance protocol** stamped into the root
 - The **Universal Constitution** (orchestration rules, security spines) injected as read-only
 - The **owner's identity/persona** available as a reference file
-- A **uv-managed Python environment** with testing and linting pre-configured
+- A **Python runtime contract** (uv preferred) defined in `agent/mcps/python.yaml`
 - A **kill switch** for API spend baked into `.env`
 - Optional **domain skill packs** appended on request (e.g. `valuation`)
 - **External consult scripts** for querying Gemini and Perplexity with project context
@@ -207,7 +207,7 @@ Token budget per loop: ~2–4k on cold start, ~1–2k per result read.
 
 ## External consult scripts
 
-Both scripts automatically attach `repo_context.md` + `SPEC.md` as context and prepend
+All consult scripts automatically attach `repo_context.md` + `SPEC.md` as context and prepend
 `identity.md` Hard Limits to the system prompt. Output goes to `agent_loop/result.md`.
 
 ```bash
@@ -281,9 +281,20 @@ For projects requiring structured external research, copy the template into the 
 cp [factory]/templates/research/r_and_d_pod.md.template [project]/research/r_and_d_pod.md
 ```
 
-Fill in the Query block (topic, decision it supports, 3 specific questions), then tell Claude:
-`"activate the R&D pod"`. The Researcher sub-agent runs, cites sources with confidence levels,
-and writes findings back into the same file.
+Fill in the Query block (topic, decision it supports, 3 specific questions), then activate
+using one of two modes:
+
+**Automated** — Python script calls Gemini API directly, writes findings, logs spend:
+```bash
+python scripts/run_r_and_d.py research/r_and_d_pod.md --task 005
+```
+
+**Interactive** — Claude Agent invocation within a Claude Code session:
+```
+"Activate the R&D pod at research/r_and_d_pod.md"
+```
+Claude spawns the Researcher sub-agent, which searches, cites sources with confidence levels
+(HIGH/MEDIUM/LOW), and writes findings back into the pod file.
 
 ---
 

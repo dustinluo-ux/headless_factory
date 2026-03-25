@@ -198,6 +198,9 @@ def main() -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     tmp = out_path.with_suffix(".tmp")
     tmp.write_text(content, encoding="utf-8")
+    if not tmp.stat().st_size:
+        tmp.unlink()
+        raise RuntimeError("summarize_run: output was empty — aborting atomic write")
     tmp.rename(out_path)
 
     print(f"[OK] result.md written → {out_path}")

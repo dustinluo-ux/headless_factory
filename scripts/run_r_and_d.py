@@ -13,7 +13,7 @@ Usage:
 
 Requires:
     GEMINI_API_KEY in .env
-    google-genai >= 1.0.0  (pip install google-genai)
+    google-genai >= 1.0.0  (uv add google-genai)
 """
 
 from __future__ import annotations
