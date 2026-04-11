@@ -17,7 +17,21 @@
       "Bash(chmod +x ~/.claude/skills/gstack/browse/dist/browse)",
       "Bash(./setup)",
       "Read(//c/Users/dusro/OneDrive/Programming/Github Resources/autoresearch//**)",
-      "Read(//c/Users/dusro/.cache/autoresearch/**)"
+      "Read(//c/Users/dusro/.cache/autoresearch/**)",
+      "Read(//c/Users/dusro/.claude/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/pre-tool-use.py"
+          }
+        ]
+      }
     ]
   }
 }
