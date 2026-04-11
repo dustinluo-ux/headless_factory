@@ -1,0 +1,88 @@
+name: Headless Claude Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: "Prompt to send to Claude"
+        required: true
+        type: string
+      max_turns:
+        description: "Max tool turns (CLAUDE_MAX_TURNS kill-switch)"
+        required: false
+        default: "50"
+  schedule:
+    # Placeholder — replace with your actual schedule
+    # Example: "0 9 * * 1" runs every Monday at 09:00 UTC
+    # For scheduled runs, set SCHEDULED_PROMPT in repository Variables
+    - cron: "0 9 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  headless-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install Python dependencies
+        run: uv sync
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Claude Code CLI
+        # Pin version in production: npm install -g @anthropic-ai/claude-code@<version>
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Initialize hook runtime files
+        run: |
+          mkdir -p .claude/hooks
+          echo "0" > .claude/hooks/.cost_accumulator
+          echo "0" > .claude/hooks/.turn_counter
+
+      - name: Run headless Claude job
+        env:
+          # SPOF: ANTHROPIC_API_KEY must be set as a repository Secret, never a Variable
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # BUDGET_USD and CLAUDE_MAX_TURNS are non-secret config — use repository Variables
+          BUDGET_USD: ${{ vars.BUDGET_USD || '5.00' }}
+          CLAUDE_MAX_TURNS: ${{ inputs.max_turns || vars.CLAUDE_MAX_TURNS || '50' }}
+          # prompt: manual dispatch uses inputs.prompt; schedule uses vars.SCHEDULED_PROMPT
+          PROMPT: ${{ inputs.prompt || vars.SCHEDULED_PROMPT }}
+        run: |
+          if [ -z "$PROMPT" ]; then
+            echo "ERROR: No prompt provided."
+            echo "  manual dispatch: supply 'prompt' input"
+            echo "  schedule trigger: set SCHEDULED_PROMPT in repository Variables"
+            exit 1
+          fi
+
+          claude --print "$PROMPT" \
+            --output-format json \
+            --max-turns "$CLAUDE_MAX_TURNS" \
+            > result.json
+
+          # Exit codes propagated automatically:
+          #   0 = success
+          #   1 = Claude error
+          #   2 = budget kill-switch triggered (pre-tool-use hook)
+
+      - name: Upload result artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: headless-run-${{ github.run_id }}
+          path: result.json
+          retention-days: 30
