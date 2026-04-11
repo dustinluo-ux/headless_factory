@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(python -c \"import google.generativeai\")",
+      "Bash(python -c \"import openai\")",
+      "Bash(python -c \"import dotenv\")",
+      "Bash(python -c \"import google.genai; print\\(''''google.genai OK''''\\)\")",
+      "Bash(python -c \"import dotenv; print\\(''''dotenv OK''''\\)\")",
+      "Bash(python3.13 -c \"import google.generativeai; print\\(''''OK''''\\)\")",
+      "Bash(pip install:*)",
+      "Bash(command -v bun)",
+      "Bash(bun --version)",
+      "Bash(curl -fsSL https://bun.sh/install)",
+      "Bash(powershell -Command \"irm bun.sh/install.ps1 | iex\" 2>&1)",
+      "Bash(chmod +x ~/.claude/skills/gstack/browse/dist/browse ~/.claude/skills/gstack/browse/dist/find-browse)",
+      "Bash(chmod +x ~/.claude/skills/gstack/browse/dist/browse)",
+      "Bash(./setup)"
+    ]
+  }
+}
